@@ -12,44 +12,40 @@ function OtpVerify() {
   const verifyOtp = async (e) => {
     e.preventDefault();
     console.log(location.state.phone)
-    console.log(location.state.user)
     try {
-      const data = await location.state.user.confirm(otp);
+      const data = await window.confirmationResult.confirm(otp);
       console.log(data)
-      // navigate('/login');
+      navigate('/login');
     } catch (error) {
       console.log(error)
+      setError("INVALID OTP - PLEASE TRY AGAIN")
     }
   }
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Verify Phone
-        </h2>
-        <p className="text-sm text-gray-500">OTP sent to {location.state.phone}</p>
-      </div>
+    <div className="flex min-h-full flex-1 flex-col">
+            <div className="bg-zinc-100 px-5 py-5 sm:mx-auto w-full">
+                <h2 className="mt-20 text-xl font-bold leading-9 tracking-tight text-gray-900">
+                    VERIFY DETAILS
+                </h2>
+                <p>OTP sent to {location.state.phone}</p>
+            </div>
 
-      <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={verifyOtp}>
-          <div>
-            <OtpInputBoxes otp={otp} setOtp={setOtp}/>
-          </div>
+            {error && <p className="px-5 py-5 pb-0 text-red-500 text-sm">{error}</p>}
 
-          {error && <p className="text-center text-sm text-red-500">Invalid OTP</p>}
-          <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              VERIFY
-            </button>
-          </div>
-        </form>
+            <form className="px-5 py-5" onSubmit={verifyOtp}>
+                <div>
+                    <OtpInputBoxes otp={otp} setOtp={setOtp}/>
+                </div>
 
-      </div>
-    </div>
+                <button
+                    type="submit"
+                    className="mt-10 bg-orange-500 flex w-full justify-center px-3 py-4 font-semibold text-white"
+                >
+                    VERIFY
+                </button>
+            </form>
+        </div>
   )
 }
 

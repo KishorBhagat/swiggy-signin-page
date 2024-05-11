@@ -6,12 +6,11 @@ import { authentication } from "../firebase/firebase-config";
 function Signup() {
 
     const [phone, setPhone] = useState('');
-    const [user, setUser] = useState(null);
 
     const navigate = useNavigate();
 
     const handlePhoneInputChange = (e) => {
-        if(e.target.value.length <= 10) 
+        if (e.target.value.length <= 10)
             setPhone(e.target.value);
         else
             return
@@ -19,12 +18,13 @@ function Signup() {
 
     const sendOtp = async () => {
         try {
-            const recaptchaVerifier = new RecaptchaVerifier(authentication, "recaptcha", {});
+            const recaptchaVerifier = new RecaptchaVerifier(authentication, "sign-in-button", {
+                size: 'invisible',
+            });
             recaptchaVerifier.render()
-            const confirmation = await signInWithPhoneNumber(authentication, '+91'+phone, recaptchaVerifier);
-            console.log(confirmation);
-            setUser(confirmation);
-            navigate(`/otp-verify`, {state:{phone, user}});
+            const confirmation = await signInWithPhoneNumber(authentication, '+1' + phone, recaptchaVerifier);
+            window.confirmationResult = confirmation;
+            navigate(`/otp-verify`, { state: { phone } });
         } catch (error) {
             console.log(error);
         }
@@ -36,52 +36,42 @@ function Signup() {
     }
 
     return (
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Sign up
+        <div className="flex min-h-full flex-1 flex-col">
+            <div className="bg-zinc-100 px-5 py-5 sm:mx-auto w-full">
+                <h2 className="mt-20 text-xl font-bold leading-9 tracking-tight text-gray-900">
+                    SIGN UP
                 </h2>
+                <p>Create an account with the new phone number</p>
             </div>
 
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
-                            Phone
-                        </label>
-                        <div className="mt-2">
-                            <input
-                                id="phone"
-                                name="phone"
-                                type="number"
-                                autoComplete="phone"
-                                value={phone}
-                                onChange={handlePhoneInputChange}
-                                required
-                                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm sm:leading-6"
-                            />
-                        </div>
+            <form className="px-5 py-5" onSubmit={handleSubmit}>
+                <div>
+                    <div className="mt-2">
+                        <input 
+                            type="text" 
+                            name="phone" 
+                            value={phone}
+                            onChange={handlePhoneInputChange}
+                            placeholder="PHONE NUMBER" 
+                            className="py-3 block w-full appearance-none focus:outline-none bg-transparent border-b-2 font-semibold" 
+                        />
                     </div>
+                </div>
 
-                    <div id="recaptcha" className="flex justify-center"></div>
+                <div id="recaptcha" className="flex justify-center"></div>
 
-                    <div>
-                        <button
-                            type="submit"
-                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            CONTINUE
-                        </button>
-                    </div>
-                </form>
+                <button
+                    type="submit"
+                    id="sign-in-button"
+                    className="mt-10 bg-orange-500 flex w-full justify-center px-3 py-4 font-semibold text-white"
+                >
+                    CONTINUE
+                </button>
+            </form>
 
-                <p className="mt-10 text-center text-sm text-gray-500">
-                    Not a member?{' '}
-                    <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                        Start a 14 day free trial
-                    </a>
-                </p>
-            </div>
+            <p className="px-5 text-justify md:text-center text-sm text-gray-500">
+                By clicking, I accept the Terms & Conditions & Privacy Policy
+            </p>
         </div>
     )
 }

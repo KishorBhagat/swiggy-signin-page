@@ -12,7 +12,7 @@ function OtpInputBoxes({otp, setOtp}) {
       onChange={setOtp}
       numInputs={6}
     //   renderSeparator={<span>-</span>}
-      renderInput={(props) => <input {...props} className='mx-auto box-content h-10 w-10 px-3 text-lg rounded-md border-2 focus:outline-indigo-600'/>}
+      renderInput={(props) => <input {...props} className='mx-auto box-content h-10 w-10 px-3 text-lg border-b-2 border-gray-300 font-semibold focus:border-orange-500 focus:outline-none'/>}
     />
   )
 }

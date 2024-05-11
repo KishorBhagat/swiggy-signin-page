@@ -10,7 +10,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/signup' element={<Signup />} />
+          <Route path='/' element={<Signup />} />
           <Route path='/otp-verify' element={<OtpVerify />} />
           <Route path='/login' element={<Login />} />
         </Routes>

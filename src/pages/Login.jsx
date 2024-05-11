@@ -2,7 +2,9 @@ import React from 'react'
 
 function Login() {
   return (
-    <div>Login Page</div>
+    <h2 className="mt-20 text-center text-xl font-bold leading-9 tracking-tight text-gray-900">
+        Login page
+    </h2>
   )
 }
 
