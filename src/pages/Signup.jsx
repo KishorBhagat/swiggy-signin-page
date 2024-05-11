@@ -1,27 +1,40 @@
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authentication } from "../firebase/firebase-config";
 
 function Signup() {
 
     const [phone, setPhone] = useState('');
+    const [user, setUser] = useState(null);
 
     const navigate = useNavigate();
 
     const handlePhoneInputChange = (e) => {
         if(e.target.value.length <= 10) 
-            setPhone(e.target.value)
+            setPhone(e.target.value);
         else
             return
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        navigate(`/otp-verify`, {state:{phone}})
+    const sendOtp = async () => {
+        try {
+            const recaptchaVerifier = new RecaptchaVerifier(authentication, "recaptcha", {});
+            recaptchaVerifier.render()
+            const confirmation = await signInWithPhoneNumber(authentication, '+91'+phone, recaptchaVerifier);
+            console.log(confirmation);
+            setUser(confirmation);
+            navigate(`/otp-verify`, {state:{phone, user}});
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    // useEffect(() => {
-    //     console.log(phone)
-    // }, [phone])
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendOtp();
+    }
+
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -49,6 +62,8 @@ function Signup() {
                             />
                         </div>
                     </div>
+
+                    <div id="recaptcha" className="flex justify-center"></div>
 
                     <div>
                         <button

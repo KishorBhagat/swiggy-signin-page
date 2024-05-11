@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import OtpInput from 'react-otp-input';
 
-function OtpInputBoxes() {
-  const [otp, setOtp] = useState('');
+function OtpInputBoxes({otp, setOtp}) {
 
   useEffect(() =>{
     console.log(otp)
@@ -17,5 +16,5 @@ function OtpInputBoxes() {
     />
   )
 }
-// className='mr-2 w-5 h-5 px-5 py-5 text-black rounded-md border-2 border-gray-600 focus:outline-indigo-600'
+
 export default OtpInputBoxes

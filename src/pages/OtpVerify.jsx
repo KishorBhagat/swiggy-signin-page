@@ -1,8 +1,26 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import OtpInputBoxes from "../components/OtpInputBoxes"
+import { useState } from "react";
 
 function OtpVerify() {
-  const location = useLocation()
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [otp, setOtp] = useState('');
+  const [error, setError] = useState("");
+
+  const verifyOtp = async (e) => {
+    e.preventDefault();
+    console.log(location.state.phone)
+    console.log(location.state.user)
+    try {
+      const data = await location.state.user.confirm(otp);
+      console.log(data)
+      // navigate('/login');
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -14,11 +32,12 @@ function OtpVerify() {
       </div>
 
       <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={verifyOtp}>
           <div>
-            <OtpInputBoxes />
+            <OtpInputBoxes otp={otp} setOtp={setOtp}/>
           </div>
 
+          {error && <p className="text-center text-sm text-red-500">Invalid OTP</p>}
           <div>
             <button
               type="submit"
