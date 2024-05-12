@@ -28,7 +28,7 @@ function OtpVerify() {
                 <h2 className="mt-20 text-xl font-bold md:text-center leading-9 tracking-tight text-gray-900">
                     VERIFY DETAILS
                 </h2>
-                <p className="md:text-center text-sm">OTP sent to {location.state.phone}</p>
+                <p className="md:text-center text-sm text-gray-400">OTP sent to {location.state.phone}</p>
             </div>
 
             {error && <p className="px-5 py-5 pb-0 text-red-500 text-sm md:text-center">{error}</p>}
