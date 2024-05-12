@@ -22,7 +22,7 @@ function Signup() {
                 size: 'invisible',
             });
             recaptchaVerifier.render();
-            const confirmation = await signInWithPhoneNumber(authentication, '+1' + phone, recaptchaVerifier);
+            const confirmation = await signInWithPhoneNumber(authentication, '+91' + phone, recaptchaVerifier);
             window.confirmationResult = confirmation;
             console.log(confirmation)
             navigate(`/otp-verify`, { state: { phone } });
