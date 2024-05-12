@@ -1,5 +1,5 @@
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authentication } from "../firebase/firebase-config";
 
@@ -21,9 +21,10 @@ function Signup() {
             const recaptchaVerifier = new RecaptchaVerifier(authentication, "sign-in-button", {
                 size: 'invisible',
             });
-            recaptchaVerifier.render()
+            recaptchaVerifier.render();
             const confirmation = await signInWithPhoneNumber(authentication, '+1' + phone, recaptchaVerifier);
             window.confirmationResult = confirmation;
+            console.log(confirmation)
             navigate(`/otp-verify`, { state: { phone } });
         } catch (error) {
             console.log(error);
@@ -35,25 +36,59 @@ function Signup() {
         sendOtp();
     }
 
+    const inputRef = useRef(null);
+    const countrySpanRef = useRef(null);
+
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = ()=> {
+        setIsFocused(true);
+        inputRef.current.placeholder = '';
+    }
+    const handleBlur = ()=> {
+        setIsFocused(false);
+        inputRef.current.placeholder = 'PHONE NUMBER';
+    }
+    
+    useEffect(() => {
+        if(phone || !phone && isFocused) {
+            countrySpanRef.current.style.opacity = "1";
+            inputRef.current.classList.add('pl-10');
+        }
+        else if(!phone && !isFocused){
+            countrySpanRef.current.style.opacity = "0";
+            inputRef.current.classList.remove('pl-10');
+        }
+    }, [phone, isFocused])
+
     return (
-        <div className="flex min-h-full flex-1 flex-col">
-            <div className="bg-zinc-100 px-5 py-5 sm:mx-auto w-full">
-                <h2 className="mt-20 text-xl font-bold leading-9 tracking-tight text-gray-900">
+        <div className="flex min-h-full flex-1 flex-col md:items-center">
+            <div className="bg-zinc-100 md:bg-white px-5 py-5 sm:mx-auto">
+                <h2 className="mt-20 text-xl font-bold md:text-center leading-9 tracking-tight text-gray-900">
                     SIGN UP
                 </h2>
-                <p>Create an account with the new phone number</p>
+                <p className="md:text-center text-sm  text-gray-400">Create an account with the new phone number</p>
             </div>
 
-            <form className="px-5 py-5" onSubmit={handleSubmit}>
+            <form className="px-5 py-5 md:w-96" onSubmit={handleSubmit}>
                 <div>
-                    <div className="mt-2">
+                    <div className="group mt-2 relative ">
                         <input 
-                            type="text" 
+                            readOnly
+                            value={"+91 - "}
+                            ref={countrySpanRef} 
+                            className="w-10 bg-transparent flex items-center py-3 font-semibold absolute focus:outline-none"
+                        />
+                        <input 
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            ref={inputRef}
+                            type="number" 
                             name="phone" 
                             value={phone}
                             onChange={handlePhoneInputChange}
                             placeholder="PHONE NUMBER" 
-                            className="py-3 block w-full appearance-none focus:outline-none bg-transparent border-b-2 font-semibold" 
+                            className="py-3 block w-full appearance-none focus:outline-none bg-transparent border-b border-gray-400 font-semibold spin-button-none" 
                         />
                     </div>
                 </div>

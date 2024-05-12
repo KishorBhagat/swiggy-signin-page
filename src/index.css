@@ -6,6 +6,11 @@
 .spin-button-none::-webkit-inner-spin-button {
   appearance: none;
 }
+
+.otp-input-container > div{
+  display: flex;
+  justify-content: center;
+}
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
