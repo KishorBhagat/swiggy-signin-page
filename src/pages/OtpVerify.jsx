@@ -35,7 +35,7 @@ function OtpVerify() {
 
             <form className="px-5 py-5 md:w-500 md:flex flex-col" onSubmit={verifyOtp}>
                 <div className="otp-input-container">
-                    <OtpInputBoxes otp={otp} setOtp={setOtp}/>
+                    <OtpInputBoxes numInp={6} otp={otp} setOtp={setOtp}/>
                 </div>
                 <div className="md:flex justify-center">
                   <button
